@@ -9,19 +9,24 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
     JobScheduler jobScheduler;
+    JobInfo jobInfo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
-    }
-    public void click1(View v)
-    {
         JobInfo.Builder builder = new JobInfo.Builder( 1,
                 new ComponentName(getPackageName(),
                         MyJobService.class.getName() ) );
         builder.setPeriodic(3000);
-        jobScheduler.schedule(builder.build());
-
+        jobInfo = builder.build();
+    }
+    public void click1(View v)
+    {
+        jobScheduler.schedule(jobInfo);
+    }
+    public void click2(View v)
+    {
+        jobScheduler.cancel(1);
     }
 }
