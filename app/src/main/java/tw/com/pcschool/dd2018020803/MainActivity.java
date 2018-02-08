@@ -3,6 +3,7 @@ package tw.com.pcschool.dd2018020803;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,9 +18,12 @@ public class MainActivity extends AppCompatActivity {
         jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
         JobInfo.Builder builder = new JobInfo.Builder( 1,
                 new ComponentName(getPackageName(),
-                        MyJobService.class.getName() ) );
-        builder.setPeriodic(3000);
-        jobInfo = builder.build();
+                        MyJobService.class.getName()) );
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            jobInfo = builder.setMinimumLatency(3000).build();
+        } else {
+            jobInfo = builder.setPeriodic(3000).build();
+        }
     }
     public void click1(View v)
     {
